@@ -4,23 +4,28 @@ import discord
 import os 
 import random 
 from dotenv import load_dotenv 
+# from ec2_metadata import ec2_metadata #
+
+# print(ec2_metadata.region) #
+# print(ec2_metadata.instance_id)#
 
 # Initializing variables #
 load_dotenv() 
  
-intents = discord.Intents.default()
-intents.messages = True
-intents.message_content = True  
-client = discord.Client(intents=intents)
-token = str(os.getenv('TOKEN')) #Creating client to send a requesto to disord API #
+# Creating instancec for the discord bot #
+
+client = discord.Client(messages=True, guilds=True)
+token = str(os.getenv('TOKEN')) #Creating client to send a request to disord API #
 
 # Initializing the Bot #
 @client.event 
 async def on_ready(): 
     print("Logged in as a bot {0.user}".format(client)) 
 
+# Array of jokes for the bot to tell #
 jokes_responses = {
-    "why you can't write with a broken pencil": "because it is pointless"
+    "Why do programmers prefer dark mode?" : "Because light attracts bugs!",
+    "Why did the programmer quit his job?" : "Because he didn't get arrays"
 }
 
 # Setting appropiate response to user meassage #    
@@ -36,11 +41,11 @@ async def on_message(message):
         return
   
     if channel == "general": 
-        if user_message.lower() == "hello" or user_message.lower() == "hi": 
-            await message.channel.send(f'Hello {username}') 
+        if user_message.lower() == "Hello" or user_message.lower() == "hi": 
+            await message.channel.send(f'Hola {username}') 
             return
         elif user_message.lower() == "bye": 
-            await message.channel.send(f'Bye {username}') 
+            await message.channel.send(f'Adios {username}') 
         elif user_message.lower() == "tell me a joke": 
             joke = random.choice(list(jokes_responses.keys()))
             response = jokes_responses[joke]
